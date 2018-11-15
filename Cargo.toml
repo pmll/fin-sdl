@@ -1,0 +1,13 @@
+[package]
+name = "fin-sdl"
+version = "0.1.0"
+authors = ["paul"]
+
+[dependencies]
+find_folder = "0.3.0"
+rand = "0.3.14"
+
+[dependencies.sdl2]
+version = "0.31"
+default-features = false
+features = ["ttf","image","mixer"]
