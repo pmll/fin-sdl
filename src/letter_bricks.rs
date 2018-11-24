@@ -35,6 +35,8 @@ pub struct LetterBricks<'a> {
     qty_filled: usize,
     brick_image: Image<'a>,
     remove_brick_sound: SoundEffect,
+    expansion: f64,
+    exp_step: f64,
 }
 
 impl<'a> LetterBricks<'a> {
@@ -135,7 +137,8 @@ impl<'a> LetterBricks<'a> {
         to_remove: Vec::with_capacity(50),
         qty_filled: 0,
         brick_image: Image::new(texture_creator, "letterbrick.png", BRICK_WIDTH - 2, BRICK_HEIGHT - 2),
-        remove_brick_sound: SoundEffect::new("remove.ogg"),}
+        remove_brick_sound: SoundEffect::new("remove.ogg"),
+        expansion: 0.0, exp_step: 0.0,}
     }
 
     pub fn reset(&mut self) {
@@ -145,6 +148,8 @@ impl<'a> LetterBricks<'a> {
             b.filled = false;
         }
         self.to_remove.clear();
+        self.expansion = 0.0;
+        self.exp_step = 0.0;
     }
 
     fn row_has_gaps(&self, letter: usize, row: usize) -> bool {
@@ -230,6 +235,11 @@ impl<'a> LetterBricks<'a> {
         self.qty_filled == BRICKS_QTY
     }
 
+    pub fn initiate_expansion(&mut self) {
+        self.expansion = 1.0;
+        self.exp_step = 0.01;
+    }
+
     pub fn update(&mut self, frame_count: u32) {
         if frame_count % REMOVE_PERIOD == 0 {
             if let Some(i) = self.to_remove.pop() {
@@ -238,13 +248,38 @@ impl<'a> LetterBricks<'a> {
                 self.remove_brick_sound.play();
             }
         }
+        if self.expansion != 0.0 {
+            if self.expansion > 1.45 {
+                self.exp_step = -0.01;
+            }
+            else if self.expansion < 1.0 {
+                self.exp_step = 0.0;
+                self.expansion = 0.0;
+            }
+            self.expansion += self.exp_step;
+        }
     }
 
     pub fn render(&self, canvas: &mut Canvas<Window>) {
-        for b in self.letter_brick.iter().filter(|&b| b.filled) {
-            let x = LETTER_BRICKS_X + b.col * BRICK_WIDTH as i32;
-            let y = LETTER_BRICKS_Y + b.row * BRICK_HEIGHT as i32;
-            self.brick_image.render(canvas, x, y);
+        if self.expansion == 0.0 {
+            for b in self.letter_brick.iter().filter(|&b| b.filled) {
+                let x = LETTER_BRICKS_X + b.col * BRICK_WIDTH as i32;
+                let y = LETTER_BRICKS_Y + b.row * BRICK_HEIGHT as i32;
+                self.brick_image.render(canvas, x, y);
+            }
+        }
+        else {
+            // brick at row 3, column 13 will remain stationary
+            let centre_x = LETTER_BRICKS_X + 13 * BRICK_WIDTH as i32;
+            let centre_y = LETTER_BRICKS_Y + 3 * BRICK_HEIGHT as i32;
+
+            for b in self.letter_brick.iter() {
+               let x = centre_x +
+                   ((b.col - 13) as f64 * BRICK_WIDTH as f64 * self.expansion) as i32;
+               let y = centre_y +
+                   ((b.row - 3) as f64 * BRICK_HEIGHT as f64 * self.expansion) as i32;
+               self.brick_image.render(canvas, x, y);
+            }
         }
     }
 }

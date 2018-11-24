@@ -142,7 +142,7 @@ pub struct Game<'a, 'b> {
     paused: bool,
     animations: Animations<'a, 'b>,
     background: Background<'a>,
-    text32: Text<'a, 'b>
+    text32: Text<'a, 'b>,
 }
 
 impl<'a, 'b> Game<'a, 'b> {
@@ -342,6 +342,9 @@ impl<'a, 'b> Game<'a, 'b> {
                     ! self.bombs.in_flight() && ! self.missile.flying() &&
                     self.ship.enough_delay_for_changeover() {
                     self.ship.proceed_with_changeover();
+                }
+                if self.letter_bricks.complete() {
+                    self.letter_bricks.initiate_expansion();
                 }
                 if self.letter_bricks.complete() || ! self.ship.life_left() {
                     self.game_state = State::GameOver;
