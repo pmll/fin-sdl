@@ -22,6 +22,7 @@ mod animation;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mixer::{DEFAULT_CHANNELS, INIT_OGG, AUDIO_S16LSB, Channel};
+use sdl2::render::BlendMode::Blend;
 use std::time::{Duration, Instant};
 use std::thread::sleep;
 
@@ -38,6 +39,7 @@ fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
+    canvas.set_blend_mode(Blend);
     let texture_creator = canvas.texture_creator();
 
     let mut events = sdl_context.event_pump().unwrap();
