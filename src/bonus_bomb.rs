@@ -64,7 +64,7 @@ impl<'a> BonusBomb<'a> {
         ScreenObjectArea::new(self.x + 10, self.y, BOMB_WIDTH - 20, BOMB_HEIGHT)
     }
 
-    fn in_flight(&self) -> bool {
+    pub fn in_flight(&self) -> bool {
         match self.bomb_state {
             State::InFlight => {true},
             _ => {false}

@@ -340,6 +340,7 @@ impl<'a, 'b> Game<'a, 'b> {
                 if self.ship.waiting_for_changeover() &&
                     self.spiders.clear() && 
                     ! self.bombs.in_flight() && ! self.missile.flying() &&
+                    ! self.bonus_bomb.in_flight() &&
                     self.ship.enough_delay_for_changeover() {
                     self.ship.proceed_with_changeover();
                 }

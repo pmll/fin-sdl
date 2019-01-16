@@ -27,18 +27,18 @@ impl SoundControl {
         if self.volume < VOL_STEPS {
             self.volume += 1;
             self.update_channel_volume();
-            let animation = Animation::new(AnimationSeq::VolumeChange(self.volume));
-            animations.register(animation);
         }
+        let animation = Animation::new(AnimationSeq::VolumeChange(self.volume));
+        animations.register(animation);
     }
 
     pub fn decrease_volume(&mut self, animations: &mut Animations) {
         if self.volume > 0 {
             self.volume -= 1;
             self.update_channel_volume();
-            let animation = Animation::new(AnimationSeq::VolumeChange(self.volume));
-            animations.register(animation);
         }
+        let animation = Animation::new(AnimationSeq::VolumeChange(self.volume));
+        animations.register(animation);
     }
 }
 
