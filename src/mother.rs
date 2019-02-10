@@ -42,14 +42,19 @@ impl<'a> Mother<'a> {
         self.bonus_bomb_frame = 1200 + rand::thread_rng().gen_range(0, 1200);
     }
 
-    pub fn update(&mut self, bonus_bomb: &mut BonusBomb, frame_count: u32) {
+    pub fn update(&mut self, bonus_bomb: &mut BonusBomb, restrict: bool, frame_count: u32) {
         self.x += self.vel;
         if self.x > (SCREEN_WIDTH - MOTHER_WIDTH) as i32 - MOTHER_SPEED ||
            self.x < MOTHER_SPEED {
             self.vel = - self.vel;
         }
         if frame_count == self.bonus_bomb_frame {
-            bonus_bomb.launch(self.x + MOTHER_WIDTH as i32 / 2);
+            if restrict {
+                self.bonus_bomb_frame += 100 + rand::thread_rng().gen_range(0, 200);  // postpone it
+            }
+            else {
+                bonus_bomb.launch(self.x + MOTHER_WIDTH as i32 / 2);
+            }
         }
     }
 

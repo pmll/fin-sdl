@@ -368,18 +368,19 @@ impl<'a, 'b> Game<'a, 'b> {
             }
 
             if self.game_state.screen_in_progress() || ! self.game_state.playing() {
+                let restrict = (self.ship.in_changeover() && self.game_state.playing()) ||
+                    self.ship.protected();
                 self.base_bricks.update();
                 self.letter_bricks.update(self.frame_count);
                 self.bonus_bomb.update();
-                self.mother.update(&mut self.bonus_bomb, self.frame_count);
+                self.mother.update(&mut self.bonus_bomb, restrict, self.frame_count);
                 self.bombs.update();
                 self.spiders.update(
                     &self.mother,
                     &mut self.base_bricks,
                     &mut self.letter_bricks,
                     &mut self.bombs,
-                    (self.ship.in_changeover() && self.game_state.playing()) ||
-                        self.ship.protected(),
+                    restrict,
                     self.frame_count);
             }
 
