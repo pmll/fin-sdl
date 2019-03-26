@@ -15,8 +15,8 @@ use animation::{AnimationSeq, Animation, Animations};
 
 // for now, all the spider co-ords/speeds to be kept as float and can be reviewed later
 const NUMBER_OF_SPIDERS: usize = 45;
-const INIT_IN_FLIGHT: u32 = 6;
-const MAX_IN_FLIGHT: u32 = 16;
+const INIT_IN_FLIGHT: u32 = 7;
+const MAX_IN_FLIGHT: u32 = 18;
 const SPIDER_WIDTH: f64 = 30.0;
 const SPIDER_HEIGHT: f64 = 40.0;
 const SPIDER_PERIOD: u32 = 20;
@@ -372,6 +372,7 @@ pub struct Spiders<'a> {
     next_spider_launch: usize,
     last_launch_frame: u32,
     max_spiders_in_flight: u32,
+    next_wave_countdown: u32,
     spider: [Spider; NUMBER_OF_SPIDERS],
     take_brick_sound: SoundEffect,
     deposit_brick_sound: SoundEffect,
@@ -415,6 +416,7 @@ impl<'a> Spiders<'a> {
             next_spider_launch: 0,
             last_launch_frame: 0,
             max_spiders_in_flight: 10, // value will only last for first demo
+            next_wave_countdown: 0,
             spider: [Spider::new(); NUMBER_OF_SPIDERS],
             take_brick_sound: SoundEffect::new("grab.ogg"),
             deposit_brick_sound: SoundEffect::new("drop.ogg"),
@@ -443,19 +445,31 @@ impl<'a> Spiders<'a> {
             self.spider[i].state = State::Nestle;
             self.spider[i].next_dir_change = 0;
             self.spider[i].next_bomb_release = 0;
-            self.spiders_left = NUMBER_OF_SPIDERS as u32;
-            self.spiders_in_flight = 0;
-            self.next_spider_launch = 0;
-            self.last_launch_frame = 0;
-            self.max_spiders_in_flight =
-                (INIT_IN_FLIGHT + ((screen - 1) / 2)).min(MAX_IN_FLIGHT);
         }
+        self.spiders_left = NUMBER_OF_SPIDERS as u32;
+        self.spiders_in_flight = 0;
+        self.next_spider_launch = 0;
+        self.last_launch_frame = 0;
+        self.max_spiders_in_flight =
+            (INIT_IN_FLIGHT + screen - 1).min(MAX_IN_FLIGHT);
+        self.next_wave_countdown = 0;
     }
 
     pub fn update(&mut self, mother: &Mother, base_bricks: &mut BaseBricks,
                   letter_bricks: &mut LetterBricks, bombs: &mut Bombs,
-                  restrict: bool, frame_count: u32 /*, sound: &SoundFx*/) {
+                  restrict: bool, frame_count: u32) {
+        if self.spiders_in_flight == self.max_spiders_in_flight &&
+           self.next_wave_countdown <= 0 {
+            self.next_wave_countdown = rand::thread_rng().gen_range(200, 400);
+        }
+        else if self.spiders_in_flight == 0 {
+            self.next_wave_countdown = 0;
+        }
+        else if self.next_wave_countdown > 0 {
+            self.next_wave_countdown -= 1;
+        }
         if self.spiders_in_flight < self.max_spiders_in_flight &&
+           self.next_wave_countdown <= 0 &&
            self.next_spider_launch < NUMBER_OF_SPIDERS &&
            frame_count > FIRST_LAUNCH &&
            frame_count - self.last_launch_frame >= FRAMES_BETWEEN_LAUNCHES &&
