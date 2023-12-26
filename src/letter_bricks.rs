@@ -3,9 +3,9 @@ use rand::Rng;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::TargetBrick;
-use soundfx::SoundEffect;
-use image::Image;
+use crate::common::TargetBrick;
+use crate::soundfx::SoundEffect;
+use crate::image::Image;
 
 const LETTER_BRICKS_Y: i32 = 140;
 const LETTER_BRICKS_X: i32 = 97;
@@ -207,7 +207,7 @@ impl<'a> LetterBricks<'a> {
         }
         // choose a random target from the list
         if list_len > 0 {
-            let id = target_list[rand::thread_rng().gen_range(0, list_len)];
+            let id = target_list[rand::thread_rng().gen_range(0..list_len)];
             let x = LETTER_BRICKS_X + self.letter_brick[id].col * BRICK_WIDTH as i32;
             let y = LETTER_BRICKS_Y + self.letter_brick[id].row * BRICK_HEIGHT as i32;
             self.letter_brick[id].targetted = true;

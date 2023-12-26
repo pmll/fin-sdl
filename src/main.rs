@@ -21,13 +21,13 @@ mod animation;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use sdl2::mixer::{DEFAULT_CHANNELS, INIT_OGG, AUDIO_S16LSB, Channel};
+use sdl2::mixer::{DEFAULT_CHANNELS, InitFlag, AUDIO_S16LSB, Channel};
 use sdl2::render::BlendMode::Blend;
 use std::time::{Duration, Instant};
 use std::thread::sleep;
 
-use game::Game;
-use common::{SCREEN_WIDTH, SCREEN_HEIGHT, UPDATE_FPS};
+use crate::game::Game;
+use crate::common::{SCREEN_WIDTH, SCREEN_HEIGHT, UPDATE_FPS};
 
 fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -53,7 +53,7 @@ fn main() {
         DEFAULT_CHANNELS,
         1_024 // chunk size
     ).unwrap();
-    let _mixer_context = sdl2::mixer::init(INIT_OGG).unwrap();
+    let _mixer_context = sdl2::mixer::init(InitFlag::OGG).unwrap();
     Channel::all().set_volume(0);
 
     let mut game = Game::new(&texture_creator, &ttf_context);

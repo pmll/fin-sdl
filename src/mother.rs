@@ -3,9 +3,9 @@ use rand::Rng;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::SCREEN_WIDTH;
-use bonus_bomb::BonusBomb;
-use image::Image;
+use crate::common::SCREEN_WIDTH;
+use crate::bonus_bomb::BonusBomb;
+use crate::image::Image;
 
 const MOTHER_Y: i32 = 100;
 const MOTHER_WIDTH: u32 = 100;
@@ -39,7 +39,7 @@ impl<'a> Mother<'a> {
 
     pub fn reset(&mut self) {
         // bonus bomb 20 - 40 sec in
-        self.bonus_bomb_frame = 1200 + rand::thread_rng().gen_range(0, 1200);
+        self.bonus_bomb_frame = 1200 + rand::thread_rng().gen_range(0..1200);
     }
 
     pub fn update(&mut self, bonus_bomb: &mut BonusBomb, restrict: bool, frame_count: u32) {
@@ -50,7 +50,7 @@ impl<'a> Mother<'a> {
         }
         if frame_count == self.bonus_bomb_frame {
             if restrict {
-                self.bonus_bomb_frame += 100 + rand::thread_rng().gen_range(0, 200);  // postpone it
+                self.bonus_bomb_frame += 100 + rand::thread_rng().gen_range(0..200);  // postpone it
             }
             else {
                 bonus_bomb.launch(self.x + MOTHER_WIDTH as i32 / 2);

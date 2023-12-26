@@ -4,14 +4,14 @@ use rand;
 use rand::Rng;
 use std::f64::consts::PI;
 
-use common;
-use mother::Mother;
-use base_bricks::BaseBricks;
-use letter_bricks::LetterBricks;
-use bombs::Bombs;
-use image::Image;
-use soundfx::SoundEffect;
-use animation::{AnimationSeq, Animation, Animations};
+use crate::common;
+use crate::mother::Mother;
+use crate::base_bricks::BaseBricks;
+use crate::letter_bricks::LetterBricks;
+use crate::bombs::Bombs;
+use crate::image::Image;
+use crate::soundfx::SoundEffect;
+use crate::animation::{AnimationSeq, Animation, Animations};
 
 // for now, all the spider co-ords/speeds to be kept as float and can be reviewed later
 const NUMBER_OF_SPIDERS: usize = 45;
@@ -132,7 +132,7 @@ impl Spider {
     }
 
     fn random_vel(&self, dr: DirRequired) -> (f64, f64) {
-        let (x_vel, y_vel) = SPEED[self.spider_type as usize][rand::thread_rng().gen_range(0, 3)];
+        let (x_vel, y_vel) = SPEED[self.spider_type as usize][rand::thread_rng().gen_range(0..3)];
         match dr {
             DirRequired::Down => {
                 let y_vel = if y_vel == 0.0 {SPEED_FAST} else {y_vel};
@@ -150,7 +150,7 @@ impl Spider {
 
     fn aimless_wandering(&mut self, x_vel: f64, y_vel: f64) -> (f64, f64) {
         if self.next_dir_change == 0 {
-            self.next_dir_change = rand::thread_rng().gen_range(100, 200);
+            self.next_dir_change = rand::thread_rng().gen_range(100..200);
         }
 
         self.next_dir_change -= 1;
@@ -171,7 +171,7 @@ impl Spider {
     fn drop_bomb(&mut self, bombs: &mut Bombs) {
         if self.y < BOMB_RELEASE_MAX_Y {
             if self.next_bomb_release == 0 {
-                self.next_bomb_release = rand::thread_rng().gen_range(50, 200);
+                self.next_bomb_release = rand::thread_rng().gen_range(50..200);
             }
             self.next_bomb_release -= 1;
             if self.next_bomb_release == 0 {
@@ -433,7 +433,7 @@ impl<'a> Spiders<'a> {
             // for nestle spiders, x and y are relative to mother
             new_spiders.spider[i].y = ((i / 15) * 8) as f64 - 16.0;
             new_spiders.spider[i].x = ((i % 15) * 6 + 5) as f64;
-            new_spiders.spider[i].anim_offset = rand::thread_rng().gen_range(0, SPIDER_PERIOD);
+            new_spiders.spider[i].anim_offset = rand::thread_rng().gen_range(0..SPIDER_PERIOD);
         }
         new_spiders
     }
@@ -460,7 +460,7 @@ impl<'a> Spiders<'a> {
                   restrict: bool, frame_count: u32) {
         if self.spiders_in_flight == self.max_spiders_in_flight &&
            self.next_wave_countdown <= 0 {
-            self.next_wave_countdown = rand::thread_rng().gen_range(200, 400);
+            self.next_wave_countdown = rand::thread_rng().gen_range(200..400);
         }
         else if self.spiders_in_flight == 0 {
             self.next_wave_countdown = 0;
@@ -566,7 +566,7 @@ impl<'a> Spiders<'a> {
                 State::Nestle => {
                     let x = spider.x as i32 + mother_x;
                     let y = spider.y as i32 + mother_y - 8;
-                    &self.spider_image_empty[type_i][3]
+                    let _ = &self.spider_image_empty[type_i][3]
                         .render_angle(canvas, x, y, 180.0, 0.2);
                 },
                 State::Swoop(n, r) => {
@@ -574,33 +574,33 @@ impl<'a> Spiders<'a> {
                     let angle = 180.0 + 180.0 * n * r as f64;
                     let x = (spider.x - SPIDER_WIDTH * 0.5 * scale) as i32;
                     let y = (spider.y - SPIDER_HEIGHT * 0.5 * scale) as i32;
-                    &self.spider_image_empty[type_i][anim_frame]
+                    let _ = &self.spider_image_empty[type_i][anim_frame]
                         .render_angle(canvas, x, y, angle, scale);
                 },
                 State::Seek(_, _, _) => {
-                    &self.spider_image_empty[type_i][anim_frame]
+                    let _ = &self.spider_image_empty[type_i][anim_frame]
                         .render(canvas, spider.x as i32, spider.y as i32);
                 },
                 State::Descend(_) => {
-                    &self.spider_image_empty[type_i][anim_frame]
+                    let _ = &self.spider_image_empty[type_i][anim_frame]
                         .render(canvas, spider.x as i32, spider.y as i32);
                 },
                 State::Grab(n, r) => {
                     let angle = 180.0 + 180.0 * n * r;
-                    &self.spider_image_laden[type_i][anim_frame]
+                    let _ = &self.spider_image_laden[type_i][anim_frame]
                         .render_angle(canvas, spider.x as i32, spider.y as i32, angle, 1.0);
                 },
                 State::Ascend => {
-                    &self.spider_image_laden[type_i][anim_frame]
+                    let _ = &self.spider_image_laden[type_i][anim_frame]
                         .render(canvas, spider.x as i32, spider.y as i32);
                 },
                 State::Carry(_, _, _) => {
-                    &self.spider_image_laden[type_i][anim_frame]
+                    let _ = &self.spider_image_laden[type_i][anim_frame]
                         .render(canvas, spider.x as i32, spider.y as i32);
                 },
                 State::Release(n, r) => {
                     let angle = 180.0 + 180.0 * n * r;
-                    &self.spider_image_empty[type_i][anim_frame]
+                    let _ = &self.spider_image_empty[type_i][anim_frame]
                         .render_angle(canvas, spider.x as i32, spider.y as i32, angle, 1.0);
                 },
                 _ => {},

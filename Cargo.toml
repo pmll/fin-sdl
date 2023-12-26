@@ -2,12 +2,13 @@
 name = "fin-sdl"
 version = "0.1.0"
 authors = ["paul"]
+edition = "2021"
 
 [dependencies]
 find_folder = "0.3.0"
-rand = "0.3.14"
+rand = "0.8.5"
 
 [dependencies.sdl2]
-version = "0.31"
+version = "0.36"
 default-features = false
 features = ["ttf","image","mixer"]

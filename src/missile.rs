@@ -1,9 +1,9 @@
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::ScreenObjectArea;
-use soundfx::SoundEffect;
-use image::Image;
+use crate::common::ScreenObjectArea;
+use crate::soundfx::SoundEffect;
+use crate::image::Image;
 
 const MISSILE_WIDTH: u32 = 3;
 const MISSILE_HEIGHT: u32 = 15;

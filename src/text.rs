@@ -4,7 +4,7 @@ use sdl2::video::Window;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 
-use common;
+use crate::common;
 
 pub struct Text<'a, 'b> {
   font: Font<'a, 'b>,

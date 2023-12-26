@@ -1,8 +1,8 @@
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::{ScreenObjectArea, SCREEN_HEIGHT};
-use image::Image;
+use crate::common::{ScreenObjectArea, SCREEN_HEIGHT};
+use crate::image::Image;
 
 const BOMB_WIDTH: u32 = 3;
 const BOMB_HEIGHT: u32 = 15;

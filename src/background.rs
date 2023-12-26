@@ -1,8 +1,8 @@
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::{SCREEN_WIDTH, SCREEN_HEIGHT};
-use image::Image;
+use crate::common::{SCREEN_WIDTH, SCREEN_HEIGHT};
+use crate::image::Image;
 
 const FRAMES: usize = 6;
 const SCROLL_SPEED: i32 = 1;

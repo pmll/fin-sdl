@@ -3,8 +3,8 @@ use rand::Rng;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::TargetBrick;
-use image::Image;
+use crate::common::TargetBrick;
+use crate::image::Image;
 
 const BASE_BRICKS_Y: i32 = 630;
 const BRICKS_HOME_X: i32 = 60;
@@ -89,7 +89,7 @@ impl<'a> BaseBricks<'a> {
         }
         // choose a random target from the list
         if list_len > 0 {
-            let id = target_list[rand::thread_rng().gen_range(0, list_len)];
+            let id = target_list[rand::thread_rng().gen_range(0..list_len)];
             let x = self.x + (id as i32 / 16) * 210 + (id as i32 % 4) * BRICK_WIDTH as i32;
             let y = BASE_BRICKS_Y + ((id as i32 % 16) / 4) * BRICK_HEIGHT as i32;
             self.targetted[id] = true;

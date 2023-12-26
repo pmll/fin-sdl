@@ -2,7 +2,7 @@ use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator, Texture};
 use sdl2::rect::Rect;
 use sdl2::image::LoadTexture;
-use common::find_asset;
+use crate::common::find_asset;
 
 pub struct Image<'a> {
     texture: Texture<'a>,

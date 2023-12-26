@@ -1,8 +1,8 @@
 use std::path::PathBuf;
-use animation::{AnimationSeq, Animation, Animations};
+use crate::animation::{AnimationSeq, Animation, Animations};
 use sdl2::mixer::{Chunk, MAX_VOLUME, Channel};
 
-use common;
+use crate::common;
 
 pub const VOL_STEPS: i32 = 10;
 const VOL_STEP: i32 = MAX_VOLUME / VOL_STEPS;

@@ -6,9 +6,9 @@ use sdl2::ttf::Sdl2TtfContext;
 use sdl2::rect::Rect;
 use sdl2::pixels::Color; 
 
-use image::Image;
-use text::Text;
-use soundfx::VOL_STEPS;
+use crate::image::Image;
+use crate::text::Text;
+use crate::soundfx::VOL_STEPS;
 
 pub enum AnimationSeq {
     ShipExplosion(i32, i32),

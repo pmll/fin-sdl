@@ -2,11 +2,11 @@
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
 
-use common::{SCREEN_WIDTH, SCREEN_HEIGHT, UPDATE_FPS, ScreenObjectArea};
-use missile::Missile;
-use image::Image;
-use soundfx::SoundEffect;
-use animation::{AnimationSeq, Animation, Animations};
+use crate::common::{SCREEN_WIDTH, SCREEN_HEIGHT, UPDATE_FPS, ScreenObjectArea};
+use crate::missile::Missile;
+use crate::image::Image;
+use crate::soundfx::SoundEffect;
+use crate::animation::{AnimationSeq, Animation, Animations};
 
 const SHIP_WIDTH: u32 = 30;
 const SHIP_HEIGHT: u32 = 40;

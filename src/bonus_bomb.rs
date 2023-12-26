@@ -2,12 +2,12 @@ use rand;
 use rand::Rng;
 use sdl2::video::{Window, WindowContext};
 use sdl2::render::{Canvas, TextureCreator};
-use soundfx::SoundEffect;
+use crate::soundfx::SoundEffect;
 
-use letter_bricks::LetterBricks;
-use common::{ScreenObjectArea, SCREEN_HEIGHT};
-use image::Image;
-use animation::{AnimationSeq, Animation, Animations};
+use crate::letter_bricks::LetterBricks;
+use crate::common::{ScreenObjectArea, SCREEN_HEIGHT};
+use crate::image::Image;
+use crate::animation::{AnimationSeq, Animation, Animations};
 
 const START_Y: i32 = 120;
 const BOMB_WIDTH: u32 = 50;
@@ -80,7 +80,7 @@ impl<'a> BonusBomb<'a> {
         self.y = START_Y;
         self.bomb_state = State::InFlight;
         self.bomb_type =
-            match rand::thread_rng().gen_range(0, 3) {
+            match rand::thread_rng().gen_range(0..3) {
                 0 => {BombType::Bonus10},
                 1 => {BombType::Bonus30},
                 _ => {BombType::Bonus50},
